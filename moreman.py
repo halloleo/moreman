@@ -161,7 +161,7 @@ def main(name,
     for f in tmp_files:
         if os.path.exists(f):
             pass
-            # os.unlink(f)
+            os.unlink(f)
 
 
 if __name__ == '__main__':
