@@ -28,12 +28,8 @@ def make_logcfg(level):
             'level': level},
     )
 
-HELP_EPILOG="""
-All other options are passed through to the 'man' command
-"""
-
 MAN_HELP_TEMPLATE = """
-.TH "%(CMDTITLE)s" 1 "(generated from help output)" "%(CMDNAME)s" "Other Commands"
+.TH "%(TITLE)s" "%(SECTION)s" "%(DATE)s" "%(PRODUCT)s" "%(CENTER)s"
 .nf
 %(BODY)s
 """
@@ -60,7 +56,8 @@ def generate_help_doc(man_name):
     :param man_name: name of man page/command
     :return: (absolute) filename of generated help doc
     """
-    args = [man_name, cfg['help_arg']]
+    args = [man_name]
+    args.extend(cfg['help_arg'].split())
     log.debug(cmd_prefix(man_name) + "Execute '%s'" % args)
     helpStr = ""
     try:
@@ -76,9 +73,15 @@ def generate_help_doc(man_name):
         return ""
 
     with tempfile.NamedTemporaryFile(mode='w', prefix='moreman_', delete=False) as hf:
-        params = {'CMDNAME': man_name,
-                  'CMDTITLE' : man_name.upper(),
-                  'BODY': helpStr.decode('UTF-8', 'ignore')}
+        params = {
+            'TITLE': man_name.upper(),
+            'SECTION': "1",
+            'DATE': "(generated via '%s %s')" %
+                    (man_name, " ".join(cfg['help_arg'].split())),
+            'PRODUCT': man_name,
+            'CENTER': "User Commands",
+            'BODY': helpStr.decode('UTF-8', 'ignore')
+        }
         nroff_doc = MAN_HELP_TEMPLATE % params
         hf.write(nroff_doc)
         tmp_name = hf.name
@@ -135,7 +138,7 @@ def call_man(man_name):
 @argh.arg('-v', '--verbose', help="verbose output ('-v' shadows man's -v for version!)")
 #@argh.arg('--save', help="save the generated man page")
 @argh.arg('--man-cmd', help="man command to be used")
-@argh.arg('--help-arg', help="help argument used to generate help document")
+@argh.arg('-g','--help-arg', help="help argument used to generate help document")
 def main(name,
          verbose=False,
          #save=False,
@@ -163,6 +166,10 @@ def main(name,
             pass
             os.unlink(f)
 
+
+HELP_EPILOG="""
+All other options are passed through to the 'man' command.
+"""
 
 if __name__ == '__main__':
     parser = arghex.ArghParserWithUnknownArgs('man_args',
