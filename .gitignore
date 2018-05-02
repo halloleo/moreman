@@ -1,5 +1,11 @@
+# My additions
+/extra/
+
+# The env-activating wrapper
+moreman
+
 # IDE
-.idea
+/.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

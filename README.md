@@ -118,10 +118,10 @@ This works in Emacs too: After `M-x man` enter at the prompt
 ## Miscellaneous 
 
 If you have difficulties, please open an GitHub issue for your problem. If
-you have engagements, please create a pull request.
+you made enhancements, please create a pull request.
 
-Please note, this project uses another little tool I wrote:
-[ArghEx][arghex]
+Also note, this project uses another little module I wrote:
+[ArghEx: Extensions for Argh][arghex]
 
 ### Licensing
 
