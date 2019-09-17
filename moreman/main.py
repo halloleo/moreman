@@ -4,10 +4,12 @@ from __future__ import print_function
 import logging
 import logging.config
 import argh
-import arghex
+from moreman import arghex
 import os
 import subprocess
 import tempfile
+
+__version__ = "0.2"
 
 # Logging
 log = logging.getLogger(__name__)
@@ -139,7 +141,7 @@ def call_man(man_name):
 #@argh.arg('--save', help="save the generated man page")
 @argh.arg('--man-cmd', help="man command to be used")
 @argh.arg('-g','--help-arg', help="help argument used to generate help document")
-def main(name,
+def work(name,
          verbose=False,
          #save=False,
          man_cmd='man',
@@ -171,8 +173,12 @@ HELP_EPILOG="""
 All other options are passed through to the 'man' command.
 """
 
-if __name__ == '__main__':
+def main():
     parser = arghex.ArghParserWithUnknownArgs('man_args',
                                               epilog=HELP_EPILOG)
-    arghex.set_default_command(parser, main)
+    arghex.set_default_command(parser, work)
     argh.dispatch(parser)
+
+
+if __name__ == "__main__":
+    main()

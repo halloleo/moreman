@@ -1,8 +1,6 @@
 # My additions
 /extra/
-
-# The env-activating wrapper
-moreman
+/Pipfile.lock
 
 # IDE
 /.idea/
