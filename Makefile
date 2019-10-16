@@ -12,5 +12,8 @@ publish: build
 install: build
 	pipx install moreman --spec .
 
+upgrade:
+	pipx upgrade moreman --spec .
+
 clean:
 	rm -r build dist *.egg-info || true

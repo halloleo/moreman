@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from __future__ import print_function
 import logging
 import logging.config
 import argh
@@ -9,7 +8,7 @@ import os
 import subprocess
 import tempfile
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 # Logging
 log = logging.getLogger(__name__)
@@ -118,10 +117,8 @@ def help_doc_if_needed(man_name):
     # Generate help_doc
     log.debug(cmd_prefix(man_name) + "Generating help doc")
     file_name = generate_help_doc(man_name)
-    if file_name:
-        log.info(cmd_prefix(man_name) + "Help doc generated")
-    else:
-        log.info(cmd_prefix(man_name) + "Not help doc generated")
+    if not file_name:
+        log.info(cmd_prefix(man_name) + "Warning: Not help doc generated")
     return file_name
 
 
@@ -137,16 +134,21 @@ def call_man(man_name):
 
 
 @argh.arg('name', nargs='+', help="name of the command or man page")
-@argh.arg('-v', '--verbose', help="verbose output ('-v' shadows man's -v for version!)")
+@argh.arg('-v', '--verbose', help="verbose output " +
+                                  "('-v' shadows man's -v for version!)")
 #@argh.arg('--save', help="save the generated man page")
 @argh.arg('--man-cmd', help="man command to be used")
 @argh.arg('-g','--help-arg', help="help argument used to generate help document")
+@argh.arg('-f','--force', help="force to generate man page from --help even " +
+                               "if man page exists ('-f' shadows man's -f " +
+                               "for whatis lookup!)")
 def work(name,
          verbose=False,
          #save=False,
          man_cmd='man',
          help_arg='--help',
-         man_args={}):
+         man_args={},
+         force=False):
     # Save function sig to global dict
     global cfg
     cfg = locals()
@@ -158,7 +160,10 @@ def work(name,
 
     # Do the work for all manual/command names
     for man_name in name:
-        man_or_file_name = help_doc_if_needed(man_name)
+        if force:
+            man_or_file_name = generate_help_doc(man_name)
+        else:
+            man_or_file_name = help_doc_if_needed(man_name)
         if man_or_file_name:
             call_man(man_or_file_name)
 
