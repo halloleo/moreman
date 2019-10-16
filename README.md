@@ -56,18 +56,23 @@ message:
 This should give you something like
 
 ```
-usage: moreman [-h] [-v] [--man-cmd MAN_CMD] [-g HELP_ARG] name [name ...]
+usage: moreman [-h] [-v] [--man-cmd MAN_CMD] [-g HELP_ARG] [-f]
+               name [name ...]
 
 positional arguments:
   name                  name of the command or man page
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --verbose         verbose output ('-v' shadows man's -v for version!) (default:
-                        False)
+  -v, --verbose         verbose output ('-v' shadows man's -v for version!)
+                        (default: False)
   --man-cmd MAN_CMD     man command to be used (default: 'man')
   -g HELP_ARG, --help-arg HELP_ARG
-                        help argument used to generate help document (default: '--help')
+                        help argument to the command used to generate help
+                        document (default: '--help')
+  -f, --force           force to generate man page from --help even if man
+                        page exists ('-f' shadows man's -f for whatis lookup!)
+                        (default: False)
 
 All other options are passed through to the 'man' command.
 ```

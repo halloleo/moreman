@@ -6,7 +6,7 @@
 
         (cd /directory/with/pipfile; pipenv run pweave --help)
 
-    to run
+    to run. Might be not easy to include in Emacs man system.
 
 ### 30-Apr-2018
 
@@ -18,7 +18,7 @@
 
 ### Earlier
 
-- [x] For commands *with* man page: option to "force" moreman/`--help` processing 
+- [x] ~For commands *with* man page: option to "force" moreman/`--help` processing~ 
 
 - [ ] For commands *with* man page: recognise when a moreman option is used and switch implicitly to force mode
 

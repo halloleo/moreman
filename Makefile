@@ -1,4 +1,7 @@
-.PHONY: clean build publish
+.PHONY: format clean build publish
+
+format:
+	black moreman/main.py
 
 build: clean
 	pipenv install setuptools wheel twine

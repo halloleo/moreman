@@ -8,26 +8,27 @@ import os
 import subprocess
 import tempfile
 
-__version__ = "0.3"
+__version__ = "0.3.1"
 
 # Logging
 log = logging.getLogger(__name__)
 
+
 def make_logcfg(level):
     return dict(
-        version = 1,
-        disable_existing_loggers = False,
-    formatters = {
-            'f': {'format':
-                      '%(levelname)s: %(message)s'}},
-        handlers = {
-            'h': {'class': 'logging.StreamHandler',
-                  'formatter': 'f',
-                  'level': level}},
-        root = {
-            'handlers': ['h'],
-            'level': level},
+        version=1,
+        disable_existing_loggers=False,
+        formatters={'f': {'format': '%(levelname)s: %(message)s'}},
+        handlers={
+            'h': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'f',
+                'level': level,
+            }
+        },
+        root={'handlers': ['h'], 'level': level},
     )
+
 
 MAN_HELP_TEMPLATE = """
 .TH "%(TITLE)s" "%(SECTION)s" "%(DATE)s" "%(PRODUCT)s" "%(CENTER)s"
@@ -73,22 +74,25 @@ def generate_help_doc(man_name):
     if not helpStr:
         return ""
 
-    with tempfile.NamedTemporaryFile(mode='w', prefix='moreman_', delete=False) as hf:
+    with tempfile.NamedTemporaryFile(
+        mode='w', prefix='moreman_', delete=False
+    ) as hf:
         params = {
             'TITLE': man_name.upper(),
             'SECTION': "1",
-            'DATE': "(generated via '%s %s')" %
-                    (man_name, " ".join(cfg['help_arg'].split())),
+            'DATE': "(generated via '%s %s')"
+            % (man_name, " ".join(cfg['help_arg'].split())),
             'PRODUCT': man_name,
             'CENTER': "User Commands",
-            'BODY': helpStr.decode('UTF-8', 'ignore')
+            'BODY': helpStr.decode('UTF-8', 'ignore'),
         }
         nroff_doc = MAN_HELP_TEMPLATE % params
         hf.write(nroff_doc)
         tmp_name = hf.name
         tmp_files.append(tmp_name)
-    log.debug(cmd_prefix(man_name)+"Temp file %s generated" % tmp_name)
+    log.debug(cmd_prefix(man_name) + "Temp file %s generated" % tmp_name)
     return tmp_name
+
 
 def help_doc_if_needed(man_name):
     """
@@ -105,8 +109,9 @@ def help_doc_if_needed(man_name):
     has_man_page = True
     try:
         # use check_output to capture output
-        subprocess.check_output([cfg['man_cmd'], '-w', man_name],
-                                stderr=subprocess.STDOUT)
+        subprocess.check_output(
+            [cfg['man_cmd'], '-w', man_name], stderr=subprocess.STDOUT
+        )
     except subprocess.CalledProcessError as err:
         has_man_page = False
 
@@ -134,21 +139,34 @@ def call_man(man_name):
 
 
 @argh.arg('name', nargs='+', help="name of the command or man page")
-@argh.arg('-v', '--verbose', help="verbose output " +
-                                  "('-v' shadows man's -v for version!)")
-#@argh.arg('--save', help="save the generated man page")
+@argh.arg(
+    '-v',
+    '--verbose',
+    help="verbose output " + "('-v' shadows man's -v for version!)",
+)
+# @argh.arg('--save', help="save the generated man page")
 @argh.arg('--man-cmd', help="man command to be used")
-@argh.arg('-g','--help-arg', help="help argument used to generate help document")
-@argh.arg('-f','--force', help="force to generate man page from --help even " +
-                               "if man page exists ('-f' shadows man's -f " +
-                               "for whatis lookup!)")
-def work(name,
-         verbose=False,
-         #save=False,
-         man_cmd='man',
-         help_arg='--help',
-         man_args={},
-         force=False):
+@argh.arg(
+    '-g',
+    '--help-arg',
+    help="help argument to the command used to generate help document",
+)
+@argh.arg(
+    '-f',
+    '--force',
+    help="force to generate man page from --help even "
+    + "if man page exists ('-f' shadows man's -f "
+    + "for whatis lookup!)",
+)
+def work(
+    name,
+    verbose=False,
+    # save=False,
+    man_cmd='man',
+    help_arg='--help',
+    man_args={},
+    force=False,
+):
     # Save function sig to global dict
     global cfg
     cfg = locals()
@@ -174,13 +192,13 @@ def work(name,
             os.unlink(f)
 
 
-HELP_EPILOG="""
+HELP_EPILOG = """
 All other options are passed through to the 'man' command.
 """
 
+
 def main():
-    parser = arghex.ArghParserWithUnknownArgs('man_args',
-                                              epilog=HELP_EPILOG)
+    parser = arghex.ArghParserWithUnknownArgs('man_args', epilog=HELP_EPILOG)
     arghex.set_default_command(parser, work)
     argh.dispatch(parser)
 
