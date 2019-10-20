@@ -2,13 +2,14 @@
 
 import logging
 import logging.config
-import argh
-from moreman import arghex
 import os
 import subprocess
 import tempfile
+import sys
+import argh
 
-__version__ = "0.3.1"
+from moreman import arghex
+from moreman import __version__
 
 # Logging
 log = logging.getLogger(__name__)
@@ -138,11 +139,16 @@ def call_man(man_name):
     subprocess.call(args)
 
 
-@argh.arg('name', nargs='+', help="name of the command or man page")
+@argh.arg('name', nargs='*', help="name of the command or man page")
 @argh.arg(
     '-v',
     '--verbose',
     help="verbose output " + "('-v' shadows man's -v for version!)",
+)
+@argh.arg(
+    '-V',
+    '--version',
+    help="show the version and exit",
 )
 # @argh.arg('--save', help="save the generated man page")
 @argh.arg('--man-cmd', help="man command to be used")
@@ -161,6 +167,7 @@ def call_man(man_name):
 def work(
     name,
     verbose=False,
+    version=False,
     # save=False,
     man_cmd='man',
     help_arg='--help',
@@ -170,6 +177,10 @@ def work(
     # Save function sig to global dict
     global cfg
     cfg = locals()
+
+    if version:
+        print(f"{__name__.split('.')[0]} {__version__}")
+        sys.exit(0)
 
     # Setup logging
     verbosity = logging.DEBUG if verbose else logging.INFO

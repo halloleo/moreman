@@ -4,9 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-
-[packages]
-argh = "*"
+# black = "*" (global install)
+invoke = "*"
 setuptools = "*"
 wheel = "*"
 twine = "*"
+bump2version = "*"
+isort = {extras = ["pyproject"],version = "*"}
+
+[packages]
+argh = "*"
+moreman = {path = "."}
