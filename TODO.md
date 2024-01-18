@@ -1,6 +1,12 @@
 # TODOs
 
-### 18-Jul-2018 
+#### 19-Jan-2024
+
+- [ ] Strip (with an option?) control codes the help output from comamnds like `scala` produce
+
+    (In the instance of `scala` the control codes look like `[0m`.)
+
+#### 18-Jul-2018 
 
 - [ ] Handle commands which are only reachable in particular virtualenvs or Pipenv setups. I.e. allow something like
 
@@ -8,15 +14,15 @@
 
     to run. Might be not easy to include in Emacs man system.
 
-### 30-Apr-2018
+#### 30-Apr-2018
 
 - [ ] Make moreman in the case of an *internal* error return exit status Ok (and output the error to stdout), so that Emacs shows the info. 
 
-### 21-Dec-2017
+#### 21-Dec-2017
 
 - [ ] Option to suppress the man page header (for commands which generate their own headers. E.g. `pipenv --man`)
 
-### Earlier
+#### Earlier
 
 - [x] ~For commands *with* man page: option to "force" moreman/`--help` processing~ 
 
