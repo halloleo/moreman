@@ -1,10 +1,12 @@
 # TODOs
 
+#### 9-Feb-2024
+
+- [ ] **Special case list:** `scala` needs `scala -color never`
+
 #### 19-Jan-2024
 
-- [ ] Strip (with an option?) control codes the help output from comamnds like `scala` produce
-
-    (In the instance of `scala` the control codes look like `[0m`.)
+- [ ] Strip (with an option?) ANSI control codes in the help output from some ommands (like `scala`). Colour escape code for example look like `[0m` (or hex `1b 5b 30 6d`).
 
 #### 18-Jul-2018 
 
@@ -28,7 +30,7 @@
 
 - [ ] For commands *with* man page: recognise when a moreman option is used and switch implicitly to force mode
 
-- [ ] Handle commands which have no man page *and* no `--help` option. This might need a config file for these special cases
 
-    Here a list of the ones I know about so far:
-    - `pew` -> help at `pew` (without args)
+- [ ] **Special case list:** `pew` needs `pew` (without args)
+
+- [ ] Handle commands which have no man page *and* no `--help` option. Use a  **Special case list.** *This might need a config file for these special cases)
