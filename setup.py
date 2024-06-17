@@ -13,7 +13,7 @@ import re
 import os
 from setuptools import find_packages, setup
 
-DEPENDENCIES = ['argh']
+DEPENDENCIES = ['argh==0.26.2']
 EXCLUDE_FROM_PACKAGES = ['contrib', 'docs', 'tests*']
 CURDIR = os.path.abspath(os.path.dirname(__file__))
 
