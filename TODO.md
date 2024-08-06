@@ -1,5 +1,9 @@
 # TODOs
 
+#### 6-Aug-2024
+
+- [ ] Strip all ANSI (color) codes (if not already stripped by special handlers like  `scala -color never`). Use https://github.com/mmlb/ansi2txt/blob/main/ansi2txt.py.
+      
 #### 9-Feb-2024
 
 - [ ] **Special case list:** `scala` needs `scala -color never`
